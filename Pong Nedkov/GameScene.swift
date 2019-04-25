@@ -17,6 +17,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var topPaddle = SKSpriteNode()
     var ball = SKSpriteNode()
+    var counter = 0
+    var label = SKLabelNode()
    
     
     override func didMove(to view: SKView) {
@@ -43,6 +45,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         top.physicsBody?.categoryBitMask = topCategory
         
         ball.physicsBody?.contactTestBitMask = topCategory|paddleCategory
+        
+        label = SKLabelNode(text: "0")
+        label.fontSize = 100.0
+        label.position = CGPoint(x: 0, y: -35)
+        addChild(label)
     }
     func didBegin(_ contact: SKPhysicsContact) {
         //print(contact.bodyA)
@@ -51,6 +58,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if contact.bodyA.categoryBitMask == topCategory{
             changePaddle(node: topPaddle)
         }
+        
+        if contact.bodyA.categoryBitMask == paddleCategory{
+            counter += 1
+            label.text = "\(counter)"
+        }
+        
+        
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
